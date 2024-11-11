@@ -11,13 +11,31 @@ class Human:
         print(f'{self.name} ушел')
     def __len__(self):
         return self.age
+    def __lt__(self, other):
+        return self.age < other.age
+    def __gt__(self, other):
+        return self.age > other.age
+    def __eq__(self, other):
+        return self.name == other.name and self.age == other.age
+    def __bool__(self):
+        return bool(self.age)
+    def __str__(self):
+        return f'{self.name}'
 
-dim = Human('Дмитрий', 35)
-den = Human('Денис', 35)
-dim.say_info()
-den.say_info()
+if __name__ == "__main__":
+    dim = Human('Дмитрий', 35)
+    den = Human('Денис', 35)
+    dim.say_info()
+    den.say_info()
+    if den:
+        den.say_info()
+    print(den)
+    print(dim == den)
+    den.birthday()
+    print(dim<den)
 
-del dim
-den.birthday()
-input()
-print(len(den))
+    del dim
+
+    input()
+    print(len(den))
+
