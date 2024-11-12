@@ -39,17 +39,16 @@ class House:
         return self.number_of_floors != other.number_of_floors
 
     def __add__(self, value):
-        if not isinstance(value, int):
-            raise ArithmeticError("value должно быть целым числом")
-        return House(self.name, self.number_of_floors + value)
-
+        if isinstance(value, int):
+            print('вызов __add__')
+            return House(self.name, self.number_of_floors + value)
+        raise TypeError("value должно быть типом int")
     def __radd__(self, value):
-        if not isinstance(value, int):
-            raise ArithmeticError("value должно быть целым числом")
-        return House(self.name, self.number_of_floors + value)
+            return self + value
 
     def __iadd__(self, value):
         if isinstance(value, int):
+            print('вызов __iadd__')
             self.number_of_floors += value
             return self
 
