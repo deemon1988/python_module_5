@@ -50,7 +50,8 @@ class House:
 
     def __iadd__(self, value):
         if isinstance(value, int):
-            return House(self.name ,self.number_of_floors + value)
+            self.number_of_floors += value
+            return self
 
 h1 = House("ЖК Эверест", 10)
 h2 = House("ЖК Новый Океан", 20)
