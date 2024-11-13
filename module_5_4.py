@@ -1,4 +1,4 @@
-#  Домашняя работа по уроку "Перегрузка операторов"
+#  Домашняя работа по уроку "Различие атрибутов класса и экземпляра"
 
 class House:
     houses_history = []
@@ -58,19 +58,15 @@ class House:
     def __del__(self):
         print(f"{self.name} снесён, но он останется в истории")
 
-if __name__ == '__main__':
-    h1 = House("ЖК Эверест", 60)
-    h2 = House("ЖК Новый Океан", 80)
-    print(h1)
-    print(h2)
 
-    print(h1 == h2)
-    print(h1 < h2)
-    print(h1 <= h2)
-    print(h1 > h2)
-    print(h1 >= h2)
-    print(h1 != h2)
-    print(h1 + 10)
-    print(10 + h2)
-    h1 += 10
-    print(h1)
+h1 = House("ЖК Эверест", 60)
+print(House.houses_history)
+h2 = House("ЖК Новый Океан", 80)
+print(House.houses_history)
+h3 = House('ЖК Матрёшки', 20)
+print(House.houses_history)
+
+# Удаление объектов
+del h2
+del h3
+print(House.houses_history)
