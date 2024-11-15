@@ -52,6 +52,9 @@ class House:
             self.number_of_floors += value
             return self
 
+    def __del__(self):
+        print("Удаление экземпляра: " + str(self))
+
 h1 = House("ЖК Эверест", 10)
 h2 = House("ЖК Новый Океан", 20)
 

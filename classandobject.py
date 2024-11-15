@@ -1,4 +1,5 @@
 class Human:
+    head = True
     def __init__(self, name, age):
         self.name = name
         self.age = age
@@ -34,8 +35,8 @@ if __name__ == "__main__":
     den.birthday()
     print(dim<den)
 
-    del dim
+    #del dim
 
-    input()
+    #input()
     print(len(den))
 
