@@ -26,6 +26,8 @@ class UrTube:
                     else:
                         continue
 
+        def logout(self):
+            self.current_user = None
 
 class Video:
     def __init__(self, title, duration, time_now=0, adult_mode=False):
