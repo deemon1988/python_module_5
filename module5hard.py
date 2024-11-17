@@ -2,12 +2,11 @@
 
 import time
 
-
 class UrTube:
-        def __init__(self, users:list=None, videos:list=None, current_user=None):
+        def __init__(self):
             self.users = []
-            self.videos = videos
-            self.current_user = current_user
+            self.videos = []
+            self.current_user = None
 
         def add(self, *video):
             add_videos = list(video).copy()
@@ -19,27 +18,19 @@ class UrTube:
                             break
                 if len(add_videos) > 0:
                     self.videos += video
-                    print("Добавленные видео:", [v.title for v in add_videos])
             else:
                 self.videos = video
-                print("Добавленные видео:", [v.title for v in add_videos])
 
 
         def log_in(self, nickname, password):
-            if self.users != None and nickname in self.users :
-                for i in self.users:
-                    if i.nickname == nickname:
-                        if i.password == hash(str(password)):
-                            self.current_user = nickname
-                            print("Log in")
-                            break
-                        else:
-                            print('Incorrect password')
-                            break
-                    else:
-                        continue
-            else:
-                print("Зарегистрируйтесь")
+            log_user = [u for u in self.users if u.nickname == nickname]
+            if log_user:
+                user = log_user[0]
+                if user.password == hash(str(password)):
+                    self.current_user = user
+                    print("Log in")
+                else:
+                    print('Incorrect password')
 
         def logout(self):
             self.current_user = None
@@ -51,26 +42,26 @@ class UrTube:
                  self.users.append(User(nickname,password,age))
 
         def get_videos(self, search_word):
-            find_videos = []
-            for i in ur.videos:
-                if search_word.upper() in i.title.upper():
-                    find_videos.append(i.title)
-            return find_videos
+            find_videos = [v.title for v in self.videos if search_word.upper() in v.title.upper()]
+            if find_videos:
+                return find_videos
 
         def watch_video(self, film_title):
-           watch = [Video for Video in ur.videos if Video.title == film_title]
-           if watch != None and self.current_user != None:
-               film = watch.pop()
-               if int(self.current_user.age) >= 18 and film.adult_mode:
-                   while film.time_now <= film.duration:
-                       print(film.time_now)
-                       time.sleep(1)
-                       film.time_now += 1
-                   print("Конец видео")
+           find_video = [video for video in ur.videos if video.title == film_title]
+           if find_video:
+               watch = find_video[0]
+               if self.current_user == None:
+                   print("Войдите в аккаунт, чтобы смотреть видео")
                else:
-                   print("Вам нет 18 лет, пожалуйста покиньте страницу")
-           else:
-               print("Войдите в аккаунт, чтобы смотреть видео")
+                   if int(self.current_user.age) >= 18 and not watch.adult_mode:
+                       while watch.time_now <= watch.duration:
+                           print(watch.time_now)
+                           time.sleep(1)
+                           watch.time_now += 1
+                       print("Конец видео")
+                   else:
+                       print("Вам нет 18 лет, пожалуйста покиньте страницу")
+
 
 class Video:
     def __init__(self, title, duration, time_now=0, adult_mode=False):
@@ -80,7 +71,7 @@ class Video:
         self.adult_mode = adult_mode
 
     def __str__(self):
-        return f"Название: {self.title}, Длительность: {self.duration}"
+        return f"Название: {self.title}, Длительность: {self.duration}, Возрастное ограничение: {self.adult_mode}"
 
 class User:
 
@@ -94,16 +85,6 @@ class User:
 
         def __str__(self):
             return f"{self.nickname}"
-#user = User(nickname:=input("Имя пользователя: "), password := input("Пароль: "), age := input("Возвраст: "))
-user = User('dim', 123, 23)
-user2 = User('den', 421, 24)
-user3 = User('max', 231, 26)
-print(user.nickname, user.password, user.age)
-
-film = Video('comedy', 100)
-clip = Video('musical', 20, adult_mode=True)
-doc = Video('documental', 50)
-
 
 
 ur = UrTube()
@@ -111,18 +92,18 @@ v1 = Video('Лучший язык программирования 2024 года
 v2 = Video('Для чего девушкам парень программист?', 10, adult_mode=True)
 # Добавление видео
 ur.add(v1, v2)
-ur.add(clip, film)
-ur.add(clip, film)
-print("Все видео:",[v.title for v in ur.videos])
-
-ur.register('dim',123, 23)
-ur.register('den', 421, 24)
-
-
-print(ur.get_videos('Прог'))
-
-ur.log_in("dim", 123)
-
-
-ur.watch_video("musical")
+# Проверка поиска
+print(ur.get_videos('лучший'))
+print(ur.get_videos('ПРОГ'))
+# Проверка на вход пользователя и возрастное ограничение
+ur.watch_video('Для чего девушкам парень программист?')
+ur.register('vasya_pupkin', 'lolkekcheburek', 13)
+ur.watch_video('Для чего девушкам парень программист?')
+ur.register('urban_pythonist', 'iScX4vIJClb9YQavjAgF', 25)
+ur.watch_video('Для чего девушкам парень программист?')
+# Проверка входа в другой аккаунт
+ur.register('vasya_pupkin', 'F8098FM8fjm9jmi', 55)
+print(ur.current_user)
+# Попытка воспроизведения несуществующего видео
+ur.watch_video('Лучший язык программирования 2024 года!')
 
