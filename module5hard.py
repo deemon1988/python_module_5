@@ -10,16 +10,16 @@ class UrTube:
 
         def add(self, *video):
             add_videos = list(video).copy()
-            if self.videos != None:
-                for i in video:
-                    for j in self.videos:
-                        if i.title == j.title:
-                            add_videos.remove(j)
-                            break
-                if len(add_videos) > 0:
-                    self.videos += video
-            else:
-                self.videos = video
+            # if self.videos != None:
+            for i in video:
+                for j in self.videos:
+                    if i.title == j.title:
+                        add_videos.remove(j)
+                        break
+            # if len(add_videos) > 0:
+            self.videos += add_videos
+            # else:
+            #     self.videos = video
 
 
         def log_in(self, nickname, password):
@@ -53,15 +53,14 @@ class UrTube:
                if self.current_user == None:
                    print("Войдите в аккаунт, чтобы смотреть видео")
                else:
-                   if int(self.current_user.age) >= 18 and not watch.adult_mode:
+                   if watch.adult_mode and int(self.current_user.age) < 18:
+                       print("Вам нет 18 лет, пожалуйста покиньте страницу")
+                   else:
                        while watch.time_now <= watch.duration:
                            print(watch.time_now)
                            time.sleep(1)
                            watch.time_now += 1
                        print("Конец видео")
-                   else:
-                       print("Вам нет 18 лет, пожалуйста покиньте страницу")
-
 
 class Video:
     def __init__(self, title, duration, time_now=0, adult_mode=False):
@@ -92,14 +91,17 @@ v1 = Video('Лучший язык программирования 2024 года
 v2 = Video('Для чего девушкам парень программист?', 10, adult_mode=True)
 # Добавление видео
 ur.add(v1, v2)
+ur.add(v1)
 # Проверка поиска
 print(ur.get_videos('лучший'))
 print(ur.get_videos('ПРОГ'))
 # Проверка на вход пользователя и возрастное ограничение
 ur.watch_video('Для чего девушкам парень программист?')
 ur.register('vasya_pupkin', 'lolkekcheburek', 13)
+ur.log_in('vasya_pupkin', 'lolkekcheburek')
 ur.watch_video('Для чего девушкам парень программист?')
 ur.register('urban_pythonist', 'iScX4vIJClb9YQavjAgF', 25)
+ur.log_in('urban_pythonist', 'iScX4vIJClb9YQavjAgF')
 ur.watch_video('Для чего девушкам парень программист?')
 # Проверка входа в другой аккаунт
 ur.register('vasya_pupkin', 'F8098FM8fjm9jmi', 55)
